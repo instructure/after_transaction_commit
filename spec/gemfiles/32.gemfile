@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gemspec :path=>"../../"
+
+gem "activerecord", "~> 3.2.19"
+
+group :test do
+  gem 'test_after_commit', git: 'https://github.com/codekitchen/test_after_commit.git', branch: 'nested-commit-callbacks'
+end
