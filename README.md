@@ -41,6 +41,14 @@ end
 # now, it has run
 ```
 
+### Usage in Tests
+
+If you want to write tests that interact with `after_transaction_commit`
+callbacks, pull in the
+[test_after_commit](https://github.com/grosser/test_after_commit) gem in
+your test environment, and things will work as expected. See that gem's
+README for installation instructions.
+
 ## Contributing
 
 1. Fork it ( https://github.com/instructure/after_transaction_commit/fork )
