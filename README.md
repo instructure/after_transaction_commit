@@ -4,6 +4,8 @@
 ActiveRecord::Base.connection.after_transaction_commit { ... }
 ```
 
+[![Build Status](https://travis-ci.org/instructure/after_transaction_commit.svg?branch=master)](https://travis-ci.org/instructure/after_transaction_commit)
+
 An ActiveRecord extension that allows writing callbacks to run after the
 current transaction commits. This is similar to the built-in
 ActiveRecord::Base#after_commit functionality, but more flexible, and
