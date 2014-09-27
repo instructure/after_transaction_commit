@@ -39,6 +39,9 @@ ActiveRecord::Base.transaction do
   # run_some_background_job has not run yet
 end
 # now, it has run
+
+# this one runs immediately, since we are outside a transaction
+ActiveRecord::Base.after_transaction_commit { some_other_task }
 ```
 
 ### Usage in Tests
