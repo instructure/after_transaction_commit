@@ -1,3 +1,5 @@
+_ = ActiveRecord::ConnectionAdapters::RealTransaction # force autoloading if necessary
+
 klass = defined?(ActiveRecord::ConnectionAdapters::OpenTransaction) ?
   ActiveRecord::ConnectionAdapters::OpenTransaction : # rails < 4.2
   ActiveRecord::ConnectionAdapters::Transaction       # rails >= 4.2
