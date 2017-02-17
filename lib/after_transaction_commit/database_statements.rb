@@ -28,16 +28,22 @@ ActiveRecord::ConnectionAdapters::DatabaseStatements.class_eval do
     @after_transaction_commit = [] if @after_transaction_commit
   end
 
-  def _transaction_test_mode?
-    defined?(TestAfterCommit)
-  end
+  if ActiveRecord.version < Gem::Version.new('5')
+    def _transaction_test_mode?
+      defined?(TestAfterCommit)
+    end
 
-  def _in_transaction_for_callbacks?
-    txn = _transaction_test_mode? ? _test_open_transactions : open_transactions
-    txn > 0
-  end
+    def _in_transaction_for_callbacks?
+      txn = _transaction_test_mode? ? _test_open_transactions : open_transactions
+      txn > 0
+    end
 
-  def _test_open_transactions
-    @test_open_transactions || 0
+    def _test_open_transactions
+      @test_open_transactions || 0
+    end
+  else
+    def _in_transaction_for_callbacks?
+      current_transaction.joinable?
+    end
   end
 end
