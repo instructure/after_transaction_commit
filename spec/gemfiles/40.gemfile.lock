@@ -7,7 +7,7 @@ GIT
       activerecord (>= 3.2)
 
 PATH
-  remote: ../../
+  remote: ../..
   specs:
     after_transaction_commit (1.1.0)
       activerecord (>= 4.0)
@@ -71,4 +71,4 @@ DEPENDENCIES
   wwtd
 
 BUNDLED WITH
-   1.12.5
+   1.14.3
