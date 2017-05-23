@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bump"
   spec.add_development_dependency "bundler", "~> 1.11"
+  spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake", "~> 11.0"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sqlite3"
