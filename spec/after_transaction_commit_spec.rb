@@ -84,4 +84,16 @@ describe AfterTransactionCommit do
     end
     expect(a).to eql 1
   end
+
+  it "doesn't lose a callback inside a callback inside a nested non-joinable transaction" do
+    a = 0
+    User.connection.transaction do
+      User.connection.transaction(:requires_new => true) do
+        User.connection.after_transaction_commit do
+          User.connection.after_transaction_commit { puts "inner callback"; a += 1 }
+        end
+      end
+    end
+    expect(a).to eql 1
+  end
 end

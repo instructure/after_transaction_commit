@@ -20,8 +20,6 @@ ActiveRecord::ConnectionAdapters::DatabaseStatements.class_eval do
       @after_transaction_commit = []
       callbacks.each { |cb| cb.call() }
     end
-  ensure
-    @after_transaction_commit = [] if @after_transaction_commit
   end
 
   def _remove_after_transaction_commit_callbacks
