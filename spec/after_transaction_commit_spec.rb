@@ -21,7 +21,6 @@ describe AfterTransactionCommit do
   end
 
   it "immediately executes the callback when in a non-joinable transaction" do
-    skip "Rails 5 only" if ActiveRecord.version < Gem::Version.new('5')
     a = 0
     User.connection.transaction(joinable: false) do
       User.connection.after_transaction_commit { a += 1 }
@@ -31,7 +30,6 @@ describe AfterTransactionCommit do
   end
 
   it "executes the callback when a nested transaction commits within a non-joinable transaction" do
-    skip "Rails 5 only" if ActiveRecord.version < Gem::Version.new('5')
     a = 0
     User.connection.transaction(joinable: false) do
       User.connection.transaction do
@@ -67,7 +65,6 @@ describe AfterTransactionCommit do
   end
 
   it "should execute the callback immediately if created during commit callback" do
-    skip "Pre-Rails 5 only" if !ENV['REAL'] && ActiveRecord.version >= Gem::Version.new('5')
     a = 0
     User.connection.transaction do
       User.connection.after_transaction_commit { User.connection.after_transaction_commit { a += 1 } }
@@ -93,6 +90,19 @@ describe AfterTransactionCommit do
           User.connection.after_transaction_commit { puts "inner callback"; a += 1 }
         end
       end
+    end
+    expect(a).to eql 1
+  end
+
+  it "doesn't call callbacks after a requires_new transaction" do
+    a = 0
+    User.connection.transaction do
+      User.connection.transaction(:requires_new => true) do
+        User.connection.after_transaction_commit do
+          a += 1
+        end
+      end
+      expect(a).to eq 0
     end
     expect(a).to eql 1
   end

@@ -2,21 +2,9 @@ bundler_args: ""
 language: ruby
 
 gemfile:
-  - spec/gemfiles/40.gemfile
-  - spec/gemfiles/41.gemfile
-  - spec/gemfiles/42.gemfile
   - spec/gemfiles/50.gemfile
+  - spec/gemfiles/51.gemfile
 rvm:
-  - 2.1.10
-  - 2.2.5
-  - 2.3.1
-env:
-  - REAL=1
-  - TEST=1
-
-matrix:
-  exclude:
-    - gemfile: spec/gemfiles/50.gemfile
-      rvm: 2.1.10
+  - 2.4.1
 
 script: bundle exec rake spec

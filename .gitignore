@@ -1,10 +1,12 @@
 /.bundle/
+/.byebug_history
 /.yardoc
 /Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
 /pkg/
+/spec/gemfiles/*.lock
 /spec/reports/
 /tmp/
 *.bundle
