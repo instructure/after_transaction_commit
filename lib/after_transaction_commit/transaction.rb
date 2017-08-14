@@ -1,25 +1,24 @@
 module AfterTransactionCommit
   module Transaction
-    if ActiveRecord.version < Gem::Version.new('5')
-      def rollback_records
-        super
-        if self.is_a?(ActiveRecord::ConnectionAdapters::RealTransaction) ||
-          (connection.send(:_transaction_test_mode?) && connection.send(:_test_open_transactions) == 0)
-          connection.send(:_remove_after_transaction_commit_callbacks)
-        end
-      end
-    else
-      def rollback_records
-        super
-        unless connection.current_transaction.joinable?
-          connection.send(:_remove_after_transaction_commit_callbacks)
-        end
-      end
+    def after_transaction_commit(&block)
+      @after_transaction_commit ||= []
+      @after_transaction_commit << block
     end
 
     def commit_records
       super
-      connection.send(:_run_after_transaction_commit_callbacks)
+      @after_transaction_commit.each(&:call) if @after_transaction_commit.present?
+    end
+  end
+
+  module TransactionManager
+    def outermost_joinable_transaction
+      last_t = nil
+      @stack.reverse_each do |t|
+        return last_t unless t.joinable?
+        last_t = t
+      end
+      last_t if last_t&.joinable?
     end
   end
 end
