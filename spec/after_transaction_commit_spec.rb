@@ -82,6 +82,19 @@ describe AfterTransactionCommit do
     expect(a).to eql 1
   end
 
+  it "doesn't execute the callback if an intermediate transaction rolls back" do
+    a = 0
+    User.connection.transaction do
+      User.connection.transaction(requires_new: true) do
+        User.connection.transaction(requires_new: true) do
+          User.connection.after_transaction_commit { a += 1 }
+        end
+        raise ActiveRecord::Rollback
+      end
+    end
+    expect(a).to eql 0
+  end
+
   it "doesn't lose a callback inside a callback inside a nested non-joinable transaction" do
     a = 0
     User.connection.transaction do

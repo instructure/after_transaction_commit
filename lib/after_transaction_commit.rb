@@ -8,4 +8,3 @@ require "after_transaction_commit/transaction"
 # force autoloading if necessary
 ActiveRecord::ConnectionAdapters::RealTransaction
 ActiveRecord::ConnectionAdapters::Transaction.prepend(AfterTransactionCommit::Transaction)
-ActiveRecord::ConnectionAdapters::TransactionManager.include(AfterTransactionCommit::TransactionManager)
