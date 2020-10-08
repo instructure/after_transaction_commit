@@ -1,24 +1,21 @@
 module AfterTransactionCommit
   module Transaction
-    def after_transaction_commit(&block)
-      @after_transaction_commit ||= []
-      @after_transaction_commit << block
+    def initialize(*)
+      super
+      @after_commit_blocks = []
+    end
+
+    def add_after_commit(block)
+      @after_commit_blocks << block
     end
 
     def commit_records
       super
-      @after_transaction_commit.each(&:call) if @after_transaction_commit.present?
-    end
-  end
-
-  module TransactionManager
-    def outermost_joinable_transaction
-      last_t = nil
-      @stack.reverse_each do |t|
-        return last_t unless t.joinable?
-        last_t = t
+      if @run_commit_callbacks
+        @after_commit_blocks.each(&:call)
+      else
+        connection.current_transaction.instance_variable_get(:@after_commit_blocks).concat(@after_commit_blocks)
       end
-      last_t if last_t&.joinable?
     end
   end
 end
