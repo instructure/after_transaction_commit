@@ -1,6 +1,6 @@
 module AfterTransactionCommit
   module Transaction
-    def initialize(*)
+    def initialize(*, **)
       super
       @after_commit_blocks = []
     end
