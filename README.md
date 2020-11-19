@@ -35,13 +35,13 @@ Or install it yourself as:
 
 ```ruby
 ActiveRecord::Base.transaction do
-  ActiveRecord::Base.after_transaction_commit { run_some_background_job }
+  ActiveRecord::Base.connection.after_transaction_commit { run_some_background_job }
   # run_some_background_job has not run yet
 end
 # now, it has run
 
 # this one runs immediately, since we are outside a transaction
-ActiveRecord::Base.after_transaction_commit { some_other_task }
+ActiveRecord::Base.connection.after_transaction_commit { some_other_task }
 ```
 
 ### Usage in Tests
