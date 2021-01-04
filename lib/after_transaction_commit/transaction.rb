@@ -1,8 +1,15 @@
 module AfterTransactionCommit
   module Transaction
-    def initialize(connection, options, run_commit_callbacks: false)
-      super
-      @after_commit_blocks = []
+    if ::ActiveRecord.version >= Gem::Version.new("6.1")
+      def initialize(connection, **options)
+        super
+        @after_commit_blocks = []
+      end
+    else
+      def initialize(connection, options, run_commit_callbacks: false)
+        super
+        @after_commit_blocks = []
+      end
     end
 
     def add_after_commit(block)
